@@ -13,7 +13,7 @@ Use the deployment to try out the website directly.
 
 ### Option 2: Local Development
 ```bash
-git clone your-repository-url
+git clone https://github.com/wolverton120/weatherapp
 cd your-project-directory
 npm install
 npm run dev
@@ -34,3 +34,7 @@ npm run dev
 | Tanzir Hossain | Currency Converter |
 | Halima Akter | Digital Clock & Stopwatch |
 | Nishat Sima Chowdhury Nishat | To-Do App |
+
+## Team Members
+
+This project is licensed under the [MIT License.](https://github.com/wolverton120/weatherapp/blob/main/LICENSE)

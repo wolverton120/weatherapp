@@ -35,6 +35,6 @@ npm run dev
 | Halima Akter | Digital Clock & Stopwatch |
 | Nishat Sima Chowdhury Nishat | To-Do App |
 
-## Team Members
+## License
 
 This project is licensed under the [MIT License.](https://github.com/wolverton120/weatherapp/blob/main/LICENSE)

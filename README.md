@@ -1,15 +1,13 @@
 ## Project Name
-
 This is a weather dashboard web app.
 
 ## What it does
-
 This web app uses [OpenWeather's API](https://openweathermap.org/api) to fetch weather forecast data and display it on the app. This app is able to search specific city names with user input, display their current weather information (temperature, condition, icon etc.) as well as forecast for the next 5 days.
 
 ## How to Run
 
 ### Option 1: Live Deployment
-Use the deployment to try out the website directly.
+Use the [deployment](https://wolverton120.github.io/weatherapp/) to try out the website directly.
 
 ### Option 2: Local Development
 ```bash
@@ -22,7 +20,6 @@ npm run dev
 **Prerequisites**: Make sure you have Node.js installed on your system.
 
 ## Team Members
-
 *Note: Since we were asked to do four projects and there's also four members in our team, we each decided to do one project each. This project was done by Sadman Adib.*
 
 **Team Name**: TaraCore  
@@ -36,5 +33,4 @@ npm run dev
 | Nishat Sima Chowdhury Nishat | To-Do App |
 
 ## License
-
 This project is licensed under the [MIT License.](https://github.com/wolverton120/weatherapp/blob/main/LICENSE)

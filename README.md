@@ -20,7 +20,7 @@ npm run dev
 **Prerequisites**: Make sure you have Node.js installed on your system.
 
 ## Team Members
-*Note: Since we were asked to do four projects and there's also four members in our team, we each decided to do one project each. This project was done by Sadman Adib.*
+*Note: Since we were asked to do four projects and there's also four members in our team, we decided to do one project each. This project was done by Sadman Adib.*
 
 **Team Name**: TaraCore  
 **Team Number**: 15

@@ -7,3 +7,11 @@ export async function getWeatherByCity(city) {
   if (!response.ok) throw new Error("City not found.");
   return response.json();
 }
+
+export async function getForecastByCity(city) {
+  const endpoint = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+
+  const response = await fetch(endpoint);
+  if (!response.ok) throw new Error("Forecast not found.");
+  return response.json();
+}

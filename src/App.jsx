@@ -30,6 +30,26 @@ export default function App() {
   };
 
   const convertTemp = (c) => (unit === "C" ? c : (c * 9) / 5 + 32);
+  const convertWindSpeed = (ms) => {
+    if (unit === "C") {
+      return ms.toFixed(1) + " m/s";
+    } else {
+      return (ms * 2.237).toFixed(1) + " mph";
+    }
+  };
+  const convertPressure = (hPa) => {
+    if (unit === "C") {
+      return hPa + " hPa";
+    } else {
+      return (hPa * 0.02953).toFixed(2) + " inHg";
+    }
+  };
+  const formatTime = (timestamp) => {
+    return new Date(timestamp * 1000).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   const fetchWeather = async (cityName) => {
     try {
@@ -82,6 +102,8 @@ export default function App() {
             max: entry.main.temp_max,
             icon: null,
             condition: null,
+            humidity: null,
+            windSpeed: null,
           };
         } else {
           daily[date].min = Math.min(daily[date].min, entry.main.temp_min);
@@ -91,6 +113,8 @@ export default function App() {
         if (!daily[date].icon && hour >= 6 && hour <= 18) {
           daily[date].icon = entry.weather[0].icon;
           daily[date].condition = entry.weather[0].main;
+          daily[date].humidity = entry.main.humidity;
+          daily[date].windSpeed = entry.wind.speed;
         }
       });
 
@@ -109,8 +133,10 @@ export default function App() {
         date,
         min: info.min,
         max: info.max,
-        icon: info.icon || "01d", 
+        icon: info.icon || "01d",
         condition: info.condition || "Clear",
+        humidity: info.humidity || 50,
+        windSpeed: info.windSpeed || 5,
       }));
 
       setForecast(fixedNextDays);
@@ -179,35 +205,75 @@ export default function App() {
       )}
 
       {weather && (
-        <div className="weather-card mx-auto max-w-md mb-8">
+        <div className="weather-card mx-auto max-w-4xl mb-8">
           <div className="shimmer"></div>
           <h2 className="text-3xl font-bold text-center mb-2">{weather.name}</h2>
 
-          <div className="flex flex-col items-center">
-            <img
-              className="w-24"
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-              alt={weather.weather[0].main}
-            />
+          <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+            <div className="flex flex-col items-center md:w-1/2">
+              <div className="flex items-center gap-2">
+                <img
+                  className="w-24"
+                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  alt={weather.weather[0].main}
+                />
+                <p className="text-6xl font-bold">
+                  {Math.round(convertTemp(weather.main.temp))}°
+                </p>
+              </div>
 
-            <p className="text-6xl font-bold mt-1">
-              {Math.round(convertTemp(weather.main.temp))}°
-            </p>
+              <p className="text-lg opacity-80 mt-1">{weather.weather[0].main}</p>
+              <p className="text-sm opacity-70 capitalize">{weather.weather[0].description}</p>
 
-            <p className="text-lg opacity-80">{weather.weather[0].main}</p>
+              <p className="mt-2 text-sm opacity-70">
+                Feels like: {Math.round(convertTemp(weather.main.feels_like))}°
+              </p>
 
-            <p className="mt-4 text-sm opacity-70">
-              Highest today:{" "}
-              {todayHighLow.high
-                ? Math.round(convertTemp(todayHighLow.high))
-                : "-"}
-              ° <br />
-              Lowest today:{" "}
-              {todayHighLow.low
-                ? Math.round(convertTemp(todayHighLow.low))
-                : "-"}
-              °
-            </p>
+              <p className="mt-2 text-sm opacity-70">
+                Highest today:{" "}
+                {todayHighLow.high
+                  ? Math.round(convertTemp(todayHighLow.high))
+                  : "-"}
+                ° <br />
+                Lowest today:{" "}
+                {todayHighLow.low
+                  ? Math.round(convertTemp(todayHighLow.low))
+                  : "-"}
+                °
+              </p>
+            </div>
+
+            <div className="md:w-1/2 mt-8 md:mt-12 w-full">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Humidity</p>
+                  <p className="text-lg font-semibold">{weather.main.humidity}%</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Wind</p>
+                  <p className="text-lg font-semibold">{convertWindSpeed(weather.wind.speed)}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Pressure</p>
+                  <p className="text-lg font-semibold">{convertPressure(weather.main.pressure)}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Visibility</p>
+                  <p className="text-lg font-semibold">{(weather.visibility / 1000).toFixed(1)} km</p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Sunrise</p>
+                  <p className="text-lg font-semibold">{formatTime(weather.sys.sunrise)}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm opacity-70">Sunset</p>
+                  <p className="text-lg font-semibold">{formatTime(weather.sys.sunset)}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -237,6 +303,11 @@ export default function App() {
                   {Math.round(convertTemp(info.max))}° /{" "}
                   {Math.round(convertTemp(info.min))}°
                 </p>
+
+                <div className="mt-3 flex justify-between text-xs opacity-70">
+                  <span>💧 {info.humidity}%</span>
+                  <span>💨 {convertWindSpeed(info.windSpeed).split(" ")[0]}</span>
+                </div>
               </div>
             ))}
           </div>
